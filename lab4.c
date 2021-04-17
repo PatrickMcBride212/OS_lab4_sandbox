@@ -58,7 +58,7 @@ static void send_error(int client_fd, int http_status_code) {
   send(client_fd, response, strlen(response), 0);
 }
 
-static void serve_request(int client_fd, char * commandline_dir){
+static void serve_request(int client_fd){
   size_t offset = 0;
   char buffer[4096] = { 0 };
 
@@ -86,16 +86,13 @@ static void serve_request(int client_fd, char * commandline_dir){
   }
 
   send(client_fd, response_str, sizeof(response_str) - 1, 0);
-  printf("Commandline dir: %s\n", commandline_dir);
-  //int dir_length = strlen(commandline_dir);
+
   // take requested_file, add a . to beginning, open that file
   char *file_path = malloc(strlen(requested_file) + 2);
-  //strcpy(file_path, commandline_dir);
   file_path[0] = '.';
   strcpy(file_path + 1, requested_file);
-  //file_path[dir_length + strlen(requested_file)] = '\0';
   free(requested_file);
-  printf("filepath: %s\n", file_path);
+
   int read_fd = open(file_path, O_RDONLY);
   free(file_path);
 
@@ -103,9 +100,8 @@ static void serve_request(int client_fd, char * commandline_dir){
     ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
     send(client_fd, buffer, bytes_read, 0);
   }
-  printf("done serving request\n");
+
   close(read_fd);
-  return;
 }
 
 /* Your program should take two arguments:
@@ -118,7 +114,6 @@ int main(int argc, char **argv) {
 
     /* Read the port number from the first command line argument. */
     int port = atoi(argv[1]);
-    char * commandline_dir = argv[2];
 
     /* Create a socket to which clients will connect. */
     int server_sock = socket(AF_INET6, SOCK_STREAM, 0);
@@ -211,8 +206,7 @@ int main(int argc, char **argv) {
 
         /* ALWAYS check the return value of send().  Also, don't hardcode
          * values.  This is just an example.  Do as I say, not as I do, etc. */
-	printf("Connection\n");
-        serve_request(sock, commandline_dir);
+        serve_request(sock);
 
         /* Tell the OS to clean up the resources associated with that client
          * connection, now that we're done with it. */
