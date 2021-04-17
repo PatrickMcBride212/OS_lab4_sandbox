@@ -15,7 +15,7 @@
 
 #define BACKLOG (10)
 
-static char const response_str[] = "HTTP/1.0 200 OK\r\n"
+static char const html_response[] = "HTTP/1.0 200 OK\r\n"
         "Content-type: text/html; charset=UTF-8\r\n\r\n";
 
 /* char* parseRequest(char* request)
@@ -84,8 +84,9 @@ static void serve_request(int client_fd, char * commandline_dir){
     free(requested_file);
     return;
   }
-
-  send(client_fd, response_str, sizeof(response_str) - 1, 0);
+  //check for file type here. based off of file type, change response_str to proper header
+  
+  send(client_fd, html_response, sizeof(html_response) - 1, 0);
   //printf("Command line dir: %s\n", commandline_dir);
   int dir_length = strlen(commandline_dir);
   // take requested_file, add a . to beginning, open that file
