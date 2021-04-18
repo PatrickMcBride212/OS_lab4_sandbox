@@ -86,6 +86,13 @@ static void serve_request(int client_fd, char * commandline_dir){
     return;
   }
   //check for file type here. based off of file type, change response_str to proper header
+  printf("file requested: %s\n", requested_file);
+  
+  char * temp = malloc(strlen(requested_file) + 1);
+  strcpy(temp, requested_file);
+  char * content_type = strtok(temp, ".");
+  content_type = strtok(NULL, ".");
+  printf("content type: %s\n", content_type);
   
   send(client_fd, html_response, sizeof(html_response) - 1, 0);
   //printf("Command line dir: %s\n", commandline_dir);
