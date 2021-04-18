@@ -113,12 +113,15 @@ static void serve_request(int client_fd, char * commandline_dir){
   int read_fd = open(file_path, O_RDONLY);
   free(file_path);
   ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
+  printf("read: %ld ", bytes_read);
   while(bytes_read != 0){
-    send(client_fd, buffer, bytes_read, 0);
+    int sent = send(client_fd, buffer, bytes_read, 0);
     bytes_read = read(read_fd, buffer, sizeof buffer);
+    printf("sent: %d\n", sent);
+    printf("read: %ld ", bytes_read);
     //send(client_fd, buffer, bytes_read, 0);
   }
-
+  printf("\n");
   close(read_fd);
 }
 
