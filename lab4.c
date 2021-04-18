@@ -61,8 +61,11 @@ static void send_error(int client_fd, int http_status_code) {
   case 400:
     status = "Bad Request";
     break;
-  }
 
+  case 404:
+    status = "Failure";
+    break;
+  }
   char response[256];
   snprintf(response, sizeof response, "HTTP/1.0 %d %s\r\nConnection: close\r\n\r\n",
            http_status_code, status);
