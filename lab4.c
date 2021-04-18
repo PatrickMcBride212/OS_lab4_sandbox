@@ -107,7 +107,7 @@ static void serve_request(int client_fd, char * commandline_dir){
   if (strcmp(content_type, "pdf") == 0) {
     send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
   }
-  else if(strcmp(content_type, "gif") == 0){
+  else if(strcmp(content_type, "png") == 0){
     send(client_fd, png_response, sizeof(png_response)-1, 0);
   }
    else {
