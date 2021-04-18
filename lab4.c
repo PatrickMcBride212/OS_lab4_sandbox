@@ -16,9 +16,17 @@
 #define BACKLOG (10)
 
 static char const html_response[] = "HTTP/1.0 200 OK\r\n"
-        "Content-type: text/html; charset=UTF-8\r\n\r\n";
+  "Content-type: text/html; charset=UTF-8\r\n\r\n";
 static char const gif_response[] = "HTTP/1.0 200 OK\r\n"
-        "Content-type: image/gif\r\n\r\n";
+  "Content-type: image/gif\r\n\r\n";
+static char const jpeg_response[] = "HTTP/1.0 200 OK\r\n"
+  "Content-type: image/jpeg\r\n\r\n";
+static char const png_response[] = "HTTP/1.0 200 OK\r\n"
+  "Content-type: image/png\r\n\r\n";
+static char const txt_response[] = "HTTP/1.0 200 OK\r\n"
+  "Content-type: text/plain\r\n\r\n";
+static char const pdf_response[] = "HTTP/1.0 200 OK\r\n"
+  "Content-type: application/pdf\r\n\r\n";
 /* char* parseRequest(char* request)
  * Args: HTTP request of the form "GET /path/to/resource HTTP/1.X"
  *
