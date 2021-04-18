@@ -17,7 +17,8 @@
 
 static char const html_response[] = "HTTP/1.0 200 OK\r\n"
         "Content-type: text/html; charset=UTF-8\r\n\r\n";
-
+static char const gif_response[] = "HTTP/1.0 200 OK\r\n"
+        "Content-type: image/gif; ";
 /* char* parseRequest(char* request)
  * Args: HTTP request of the form "GET /path/to/resource HTTP/1.X"
  *
