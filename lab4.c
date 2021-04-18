@@ -102,11 +102,7 @@ static void serve_request(int client_fd, char * commandline_dir){
   char * content_type = strtok(temp, ".");
   content_type = strtok(NULL, ".");
   printf("content type: %s\n", content_type);
-  /*
-  if (strcmp(content_type, "html") == 0) {
-    send(client_fd, html_response, sizeof(html_response)-1, 0);
-  }
-  */
+  
   if (strcmp(content_type, "gif") == 0) {
     send(client_fd, gif_response, sizeof(gif_response)-1, 0);
   } else {
@@ -114,18 +110,17 @@ static void serve_request(int client_fd, char * commandline_dir){
   }
   //send(client_fd, response, sizeof(response) - 1, 0);
   //printf("Command line dir: %s\n", commandline_dir);
-  int dir_length = strlen(commandline_dir);
   // take requested_file, add a . to beginning, open that file
-  char *file_path = malloc(strlen(requested_file) + dir_length + 3);
-  strcpy(file_path, commandline_dir);
-  strcpy(file_path + dir_length, requested_file);
+  char *file_path = malloc(strlen(requested_file) + 2);
+  file_path[0] = '.';
+  strcpy(file_path + 1, requested_file);
   free(requested_file);
   printf("filepath: %s\n", file_path);
   int read_fd = open(file_path, O_RDONLY);
   free(file_path);
   ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
   printf("read: %ld ", bytes_read);
-  while(bytes_read != 0){
+  while(bytes_read != 0 && bytes_read != -1){
     int sent = send(client_fd, buffer, bytes_read, 0);
     bytes_read = read(read_fd, buffer, sizeof buffer);
     printf("sent: %d\n", sent);
@@ -202,7 +197,15 @@ int main(int argc, char **argv) {
         perror("Error binding to port");
         exit(1);
     }
-
+    //time to change directories to the commandline_dir
+    int chdir_retval = chdir(commandline_dir);
+    printf("chdir retval: %d\n", chdir_retval);
+    char cwd[256];
+    if (getcwd(cwd, sizeof(cwd)) == NULL) {
+      perror("getcwd() error\n");
+    } else {
+      printf("current working directory: %s\n", cwd);
+    }
     /* Now that we've bound to an address and port, we tell the OS that we're
      * ready to start listening for client connections.  This effectively
      * activates the server socket.  BACKLOG (#defined above) tells the OS how
