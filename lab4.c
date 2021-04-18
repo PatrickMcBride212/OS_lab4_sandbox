@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
+#include <sys/stat.h>
 
 #define BACKLOG (10)
 
@@ -116,6 +117,10 @@ static void serve_request(int client_fd, char * commandline_dir){
   strcpy(file_path + 1, requested_file);
   free(requested_file);
   printf("filepath: %s\n", file_path);
+  struct stat st;
+  stat(file_path, &st);
+  int size = st.st_size;
+  printf("filesize: %d\n", size);
   int read_fd = open(file_path, O_RDONLY);
   free(file_path);
   ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
