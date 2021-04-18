@@ -18,7 +18,7 @@
 static char const html_response[] = "HTTP/1.0 200 OK\r\n"
         "Content-type: text/html; charset=UTF-8\r\n\r\n";
 static char const gif_response[] = "HTTP/1.0 200 OK\r\n"
-        "Content-type: image/gif; ";
+        "Content-type: image/gif;";
 /* char* parseRequest(char* request)
  * Args: HTTP request of the form "GET /path/to/resource HTTP/1.X"
  *
@@ -28,6 +28,7 @@ static char const gif_response[] = "HTTP/1.0 200 OK\r\n"
  * Does not modify the given request string.
  * The returned resource should be free'd by the caller function.
  */
+
 static char *parseRequest(char *request) {
   //assume file paths are no more than 4095 bytes + 1 for null.
   char *buffer = calloc(4096, 1);
@@ -93,8 +94,14 @@ static void serve_request(int client_fd, char * commandline_dir){
   char * content_type = strtok(temp, ".");
   content_type = strtok(NULL, ".");
   printf("content type: %s\n", content_type);
-  
-  send(client_fd, html_response, sizeof(html_response) - 1, 0);
+
+  if (strcmp(content_type, "html") == 0) {
+    send(client_fd, html_response, sizeof(html_response)-1, 0);
+  }
+  if (strcmp(content_type, "gif") == 0) {
+    send(client_fd, gif_response, sizeof(html_response)-1, 0);
+  }
+  //send(client_fd, response, sizeof(response) - 1, 0);
   //printf("Command line dir: %s\n", commandline_dir);
   int dir_length = strlen(commandline_dir);
   // take requested_file, add a . to beginning, open that file
