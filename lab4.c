@@ -193,8 +193,10 @@ static void serve_request(int client_fd, char * commandline_dir){
   }
   */
   if (strcmp(content_type, "gif") == 0) {
+    printf("gif\n");
     send(client_fd, gif_response, sizeof(gif_response)-1, 0);
   } else {
+    printf("html\n");
     send(client_fd, html_response, sizeof(html_response)-1, 0);
   }
   // take requested_file, add a . to beginning, open that file
