@@ -108,14 +108,17 @@ static void serve_request(int client_fd, char * commandline_dir){
     return;
   }
   //check for file type here. based off of file type, change response_str to proper header
+
+  /*
   printf("file requested: %s\n", requested_file);
-  
   char * temp = malloc(strlen(requested_file) + 1);
   strcpy(temp, requested_file);
   char * content_type = strtok(temp, ".");
   content_type = strtok(NULL, ".");
-  //printf("content type: %s\n", content_type);
+  printf("content type1: %s\n", content_type);
   free(temp);
+  */
+  
   char * file_check = malloc(strlen(requested_file + 1));
   file_check[0] = '.';
   strcpy(file_check+1, requested_file);
@@ -151,7 +154,13 @@ static void serve_request(int client_fd, char * commandline_dir){
     return;
   }
   //now check for file content type
-  printf(content_type);
+  printf("file requested: %s\n", requested_file);
+  char * temp = malloc(strlen(requested_file) + 1);
+  strcpy(temp, requested_file);
+  char * content_type = strtok(temp, ".");
+  content_type = strtok(NULL, ".");
+  printf("content type: %s\n", content_type);
+  free(temp);
   if (strcmp(content_type, "pdf") == 0) {
     send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
   }
