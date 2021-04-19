@@ -133,7 +133,8 @@ static void serve_request(int client_fd, char * commandline_dir){
             base_length = strlen(final_path)+1;
         }
         printf("base length: %d\n", base_length);
-        printf("base: %s\n", final_path);
+        strcpy(final_path, file_path);
+        printf("final path base: %s\n", final_path);
     } else {
         printf("%s isn't a dir\n", file_path);
     }
