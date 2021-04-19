@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <stdbool.h>
+#include <dirent.h>
+#include <errno.h>
 
 #define BACKLOG (10)
 
@@ -108,14 +110,18 @@ static void serve_request(int client_fd, char * commandline_dir){
     char * content_type = strtok(temp, ".");
     content_type = strtok(NULL, ".");
     printf("content type: %s\n", content_type);
-    //send(client_fd, response, sizeof(response) - 1, 0);
-    //printf("Command line dir: %s\n", commandline_dir);
-    // take requested_file, add a . to beginning, open that file
+    // take requested_file, add a . to beginning, check if dir, then check if file
     char *file_path = malloc(strlen(requested_file) + 2);
     file_path[0] = '.';
     strcpy(file_path + 1, requested_file);
     free(requested_file);
     printf("filepath: %s\n", file_path);
+    DIR* dir  = opendir(file_path);
+    if (dir) {
+        printf("%s is a dir!\n", file_path);
+    } else {
+        printf("%s isn't a dir\n", file_path);
+    }
     struct stat st;
     stat(file_path, &st);
     int size = st.st_size;
