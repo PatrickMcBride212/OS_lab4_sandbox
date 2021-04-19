@@ -164,21 +164,28 @@ static void serve_request(int client_fd, char * commandline_dir){
   printf("content type: %s\n", content_type);
   free(temp);
   if (strcmp(content_type, "pdf") == 0) {
+    printf("pdf header sent\n");
     send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
   }
   else if(strcmp(content_type, "png") == 0){
+    printf("png header sent\n");
     send(client_fd, png_response, sizeof(png_response)-1, 0);
   }
   else if(strcmp(content_type, "gif") == 0){
+    printf("gif header sent\n");
     send(client_fd, gif_response, sizeof(gif_response)-1, 0);
   }
   else if(strcmp(content_type, "txt") == 0){
+    printf("txt header sent\n");
     send(client_fd, txt_response, sizeof(txt_response)-1, 0);
   }
-  else if(strcmp(content_type, "jpeg") == 0){
+  else if(strcmp(content_type, "jpg") == 0 || strcmp(content_type, "jpeg") == 0) {
+    printf("jpg header sent\n");
     send(client_fd, jpeg_response, sizeof(jpeg_response)-1, 0);
   }
+  //else if(strcmp(content_type, "html") == 0) {
   else {
+    printf("html header sent\n");
     send(client_fd, html_response, sizeof(html_response)-1, 0);
   }
   //send(client_fd, response, sizeof(response) - 1, 0);
