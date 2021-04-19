@@ -13,6 +13,7 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 
 #define BACKLOG (10)
 
@@ -92,7 +93,6 @@ static void serve_request(int client_fd, char * commandline_dir){
         send_error(client_fd, 400); // Bad Request
         return;
     }
-
     /* Make sure the requested_file starts with a / and does not contain /../
      * anywhere.
      */
@@ -101,47 +101,13 @@ static void serve_request(int client_fd, char * commandline_dir){
         free(requested_file);
         return;
     }
-    //check for file type here. based off of file type, change response_str to proper header
     printf("file requested: %s\n", requested_file);
-
+    //check for file type here. based off of file type, change response_str to proper header
     char * temp = malloc(strlen(requested_file) + 1);
     strcpy(temp, requested_file);
     char * content_type = strtok(temp, ".");
     content_type = strtok(NULL, ".");
     printf("content type: %s\n", content_type);
-
-    //first check for file existence. If file doesn't exist, send 404 error and return from current function
-    /*
-    if (access(requested_file, F_OK) != 0) {
-      //send the 404 error thing
-      printf("%s Not found\n", requested_file);
-      send(client_fd, not_found_response, sizeof(not_found_response)-1, 0);
-
-      char *file_path = malloc(strlen(not_found_file + 1));
-      strcpy(file_path, not_found_file);
-      printf("filepath: %s\n", file_path);
-      struct stat st;
-      stat(file_path, &st);
-      int size = st.st_size;
-      printf("filesize: %d\n", size);
-      int read_fd = open(file_path, O_RDONLY);
-      free(file_path);
-      ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
-      printf("read: %ld", bytes_read);
-      while (bytes_read != 0 && bytes_read != -1) {
-        int sent = send(client_fd, buffer, bytes_read, 0);
-        bytes_read = read(read_fd, buffer, sizeof buffer);
-        printf("sent: %d\n", sent);
-        printf("read: %ld", bytes_read);
-      }
-      printf("\n");
-      close(read_fd);
-
-      return;
-    }
-  */
-    //now check for file content type
-    //else
     if (strcmp(content_type, "pdf") == 0) {
         send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
     }
@@ -173,6 +139,11 @@ static void serve_request(int client_fd, char * commandline_dir){
     int size = st.st_size;
     printf("filesize: %d\n", size);
     int read_fd = open(file_path, O_RDONLY);
+    if (read_fd == -1) {
+      printf("%s does not exist\n", file_path);
+    } else {
+      printf("%s exists\n", file_path);
+    }
     free(file_path);
     ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
     printf("read: %ld ", bytes_read);
