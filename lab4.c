@@ -152,7 +152,7 @@ static void serve_request(int client_fd, char * commandline_dir){
   free(file_check);
   //now check for file content type
   //else
-  if (strcmp(content_type, "pdf") == 0) {
+  else if (strcmp(content_type, "pdf") == 0) {
     send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
   }
   else if(strcmp(content_type, "png") == 0){
