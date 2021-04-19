@@ -108,6 +108,26 @@ static void serve_request(int client_fd, char * commandline_dir){
     char * content_type = strtok(temp, ".");
     content_type = strtok(NULL, ".");
     printf("content type: %s\n", content_type);
+    //send(client_fd, response, sizeof(response) - 1, 0);
+    //printf("Command line dir: %s\n", commandline_dir);
+    // take requested_file, add a . to beginning, open that file
+    char *file_path = malloc(strlen(requested_file) + 2);
+    file_path[0] = '.';
+    strcpy(file_path + 1, requested_file);
+    free(requested_file);
+    printf("filepath: %s\n", file_path);
+    struct stat st;
+    stat(file_path, &st);
+    int size = st.st_size;
+    printf("filesize: %d\n", size);
+    int read_fd = open(file_path, O_RDONLY);
+    if (read_fd == -1) {
+      printf("%s does not exist\n", file_path);
+        send(client_fd, not_found_response, sizeof(not_found_response)-1, 0);
+    } else {
+      printf("%s exists\n", file_path);
+    }
+    free(file_path);
     if (strcmp(content_type, "pdf") == 0) {
         send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
     }
@@ -126,25 +146,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     else {
         send(client_fd, html_response, sizeof(html_response)-1, 0);
     }
-    //send(client_fd, response, sizeof(response) - 1, 0);
-    //printf("Command line dir: %s\n", commandline_dir);
-    // take requested_file, add a . to beginning, open that file
-    char *file_path = malloc(strlen(requested_file) + 2);
-    file_path[0] = '.';
-    strcpy(file_path + 1, requested_file);
-    free(requested_file);
-    printf("filepath: %s\n", file_path);
-    struct stat st;
-    stat(file_path, &st);
-    int size = st.st_size;
-    printf("filesize: %d\n", size);
-    int read_fd = open(file_path, O_RDONLY);
-    if (read_fd == -1) {
-      printf("%s does not exist\n", file_path);
-    } else {
-      printf("%s exists\n", file_path);
-    }
-    free(file_path);
+
     ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
     printf("read: %ld ", bytes_read);
     while(bytes_read != 0 && bytes_read != -1){
