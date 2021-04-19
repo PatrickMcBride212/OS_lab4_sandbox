@@ -28,9 +28,9 @@ static char const txt_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: text/plain\r\n\r\n";
 static char const pdf_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: application/pdf\r\n\r\n";
-static char const not_found_response[] = "HTTP/1.0 404 Not Found\r\n"
-  "Content-type: text/html; charset=UTF-8\r\n\r\n";
-static char const not_found_file[] = "./not_found.html";
+//static char const not_found_response[] = "HTTP/1.0 404 Not Found\r\n"
+//"Content-type: text/html; charset=UTF-8\r\n\r\n";
+//static char const not_found_file[] = "./not_found.html";
 /* char* parseRequest(char* request)
  * Args: HTTP request of the form "GET /path/to/resource HTTP/1.X"
  *
@@ -111,11 +111,12 @@ static void serve_request(int client_fd, char * commandline_dir){
   printf("content type: %s\n", content_type);
 
   //first check for file existence. If file doesn't exist, send 404 error and return from current function
-
-  if (access(requested_file, F_OK) == -1) {
+  /*
+  if (access(requested_file, F_OK) != 0) {
     //send the 404 error thing
     printf("%s Not found\n", requested_file);
     send(client_fd, not_found_response, sizeof(not_found_response)-1, 0);
+    
     char *file_path = malloc(strlen(not_found_file + 1));
     strcpy(file_path, not_found_file);
     printf("filepath: %s\n", file_path);
@@ -135,11 +136,13 @@ static void serve_request(int client_fd, char * commandline_dir){
     }
     printf("\n");
     close(read_fd);
+    
     return;
   }
-  
+*/
   //now check for file content type
-  else if (strcmp(content_type, "pdf") == 0) {
+  //else
+  if (strcmp(content_type, "pdf") == 0) {
     send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
   }
   else if(strcmp(content_type, "png") == 0){
