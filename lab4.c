@@ -119,7 +119,7 @@ static void serve_request(int client_fd, char * commandline_dir){
   free(temp);
   */
 
-  
+  /*
   char * file_check = malloc(strlen(requested_file + 1));
   file_check[0] = '.';
   strcpy(file_check+1, requested_file);
@@ -154,7 +154,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     
     return;
   }
-  
+  */
   //now check for file content type
   printf("file requested: %s\n", requested_file);
   char * temp = malloc(strlen(requested_file) + 1);
@@ -184,7 +184,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     send(client_fd, jpeg_response, sizeof(jpeg_response)-1, 0);
   }
   //else if(strcmp(content_type, "html") == 0) {
-  else if(strcmp(content_type, "html") == 0) {
+  else {
     printf("html header sent\n");
     send(client_fd, html_response, sizeof(html_response)-1, 0);
   }
