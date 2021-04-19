@@ -123,7 +123,7 @@ static void serve_request(int client_fd, char * commandline_dir){
         if (file_path[strlen(file_path)-1] == '/') {
             printf("%s ends in slash\n", file_path);
         } else {
-            printf("%s doesn't end in slash\n", file_path)
+            printf("%s doesn't end in slash\n", file_path);
         }
     } else {
         printf("%s isn't a dir\n", file_path);
