@@ -119,6 +119,12 @@ static void serve_request(int client_fd, char * commandline_dir){
     DIR* dir  = opendir(file_path);
     if (dir) {
         printf("%s is a dir!\n", file_path);
+        send(client_fd, html_response, sizeof(html_response)-1, 0);
+        if (file_path[strlen(file_path)-1] == '/') {
+            printf("%s ends in slash\n", file_path);
+        } else {
+            printf("%s doesn't end in slash\n", file_path)
+        }
     } else {
         printf("%s isn't a dir\n", file_path);
     }
