@@ -19,6 +19,7 @@
 
 static char const html_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: text/html; charset=UTF-8\r\n\r\n";
+/*
 static char const gif_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: image/gif\r\n\r\n";
 static char const jpeg_response[] = "HTTP/1.0 200 OK\r\n"
@@ -29,9 +30,11 @@ static char const txt_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: text/plain\r\n\r\n";
 static char const pdf_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: application/pdf\r\n\r\n";
-//static char const not_found_response[] = "HTTP/1.0 404 Not Found\r\n"
-//"Content-type: text/html; charset=UTF-8\r\n\r\n";
-//static char const not_found_file[] = "./not_found.html";
+static char const not_found_response[] = "HTTP/1.0 404 Not Found\r\n"
+  "Content-type: text/html; charset=UTF-8\r\n\r\n";
+static char const not_found_file[] = "./not_found.html";
+*/
+
 /* char* parseRequest(char* request)
  * Args: HTTP request of the form "GET /path/to/resource HTTP/1.X"
  *
@@ -41,11 +44,12 @@ static char const pdf_response[] = "HTTP/1.0 200 OK\r\n"
  * Does not modify the given request string.
  * The returned resource should be free'd by the caller function.
  */
-
+/*
 static bool file_exists (char *filename) {
   struct stat buffer;
   return (stat (filename, &buffer) == 0);
 }
+*/
 
 static char *parseRequest(char *request) {
   //assume file paths are no more than 4095 bytes + 1 for null.
@@ -163,6 +167,7 @@ static void serve_request(int client_fd, char * commandline_dir){
   content_type = strtok(NULL, ".");
   printf("content type: %s\n", content_type);
   free(temp);
+  /*
   if (strcmp(content_type, "pdf") == 0) {
     printf("pdf header sent\n");
     send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
@@ -182,14 +187,12 @@ static void serve_request(int client_fd, char * commandline_dir){
   else if(strcmp(content_type, "jpg") == 0 || strcmp(content_type, "jpeg") == 0) {
     printf("jpg header sent\n");
     send(client_fd, jpeg_response, sizeof(jpeg_response)-1, 0);
-  }
-  //else if(strcmp(content_type, "html") == 0) {
-  else {
+  } else if {
     printf("html header sent\n");
     send(client_fd, html_response, sizeof(html_response)-1, 0);
   }
-  //send(client_fd, response, sizeof(response) - 1, 0);
-  //printf("Command line dir: %s\n", commandline_dir);
+  */
+  send(client_fd, html_response, sizeof(html_response)-1, 0);
   // take requested_file, add a . to beginning, open that file
   char *file_path = malloc(strlen(requested_file) + 2);
   file_path[0] = '.';
