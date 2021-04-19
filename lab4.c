@@ -123,7 +123,19 @@ static void serve_request(int client_fd, char * commandline_dir){
     int read_fd = open(file_path, O_RDONLY);
     if (read_fd == -1) {
       printf("%s does not exist\n", file_path);
-        send(client_fd, not_found_response, sizeof(not_found_response)-1, 0);
+      send(client_fd, not_found_response, sizeof(not_found_response)-1, 0);
+      ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
+      printf("read: %ld\n", bytes_read);
+      while(bytes_read != 0 && bytes_read != -1){
+          int sent = send(client_fd, buffer, bytes_read, 0);
+          bytes_read = read(read_fd, buffer, sizeof buffer);
+          printf("sent: %d\n", sent);
+          printf("read: %ld ", bytes_read);
+          //send(client_fd, buffer, bytes_read, 0);
+      }
+      printf("\n");
+      close(read_fd);
+      return;
     } else {
       printf("%s exists\n", file_path);
     }
