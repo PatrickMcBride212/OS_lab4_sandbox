@@ -120,11 +120,20 @@ static void serve_request(int client_fd, char * commandline_dir){
     if (dir) {
         printf("%s is a dir!\n", file_path);
         send(client_fd, html_response, sizeof(html_response)-1, 0);
+        char * final_path;
+        int base_length;
         if (file_path[strlen(file_path)-1] == '/') {
             printf("%s ends in slash\n", file_path);
+            final_path = malloc(strlen(final_path) + strlen("index.html"));
+            base_length = strlen(final_path);
         } else {
             printf("%s doesn't end in slash\n", file_path);
+            final_path = malloc(strlen(final_path) + strlen("index.html") + 1);
+            final_path[strlen(final_path)] = '/';
+            base_length = strlen(final_path)+1;
         }
+        printf("base length: %d\n", base_length);
+        printf("base: %s\n", final_path);
     } else {
         printf("%s isn't a dir\n", file_path);
     }
