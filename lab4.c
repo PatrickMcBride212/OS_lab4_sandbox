@@ -19,9 +19,9 @@
 
 static char const html_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: text/html; charset=UTF-8\r\n\r\n";
-/*
 static char const gif_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: image/gif\r\n\r\n";
+/*
 static char const jpeg_response[] = "HTTP/1.0 200 OK\r\n"
   "Content-type: image/jpeg\r\n\r\n";
 static char const png_response[] = "HTTP/1.0 200 OK\r\n"
@@ -192,7 +192,11 @@ static void serve_request(int client_fd, char * commandline_dir){
     send(client_fd, html_response, sizeof(html_response)-1, 0);
   }
   */
-  send(client_fd, html_response, sizeof(html_response)-1, 0);
+  if (strcmp(content_type, "gif") == 0) {
+    send(client_fd, gif_response, sizeof(gif_response)-1, 0);
+  } else {
+    send(client_fd, html_response, sizeof(html_response)-1, 0);
+  }
   // take requested_file, add a . to beginning, open that file
   char *file_path = malloc(strlen(requested_file) + 2);
   file_path[0] = '.';
