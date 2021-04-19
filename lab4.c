@@ -115,9 +115,13 @@ static void serve_request(int client_fd, char * commandline_dir){
   char * content_type = strtok(temp, ".");
   content_type = strtok(NULL, ".");
   printf("content type: %s\n", content_type);
-
+  free(temp);
+  char * file_check = malloc(strlen(requested_file + 1));
+  file_check[0] = '.';
+  strcpy(file_check+1, requested_file);
+  printf("filecheck: %s\n", file_check);
   //first check for file existence. If file doesn't exist, send 404 error and return from current function
-  if (!file_exists(requested_file)) {
+  if (!file_exists(file_check)) {
     printf("%s does not exist\n", requested_file);
     //send the 404 error thing
     //printf("%s Not found\n", requested_file);
@@ -145,6 +149,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     
     return;
   }
+  free(file_check);
   //now check for file content type
   //else
   if (strcmp(content_type, "pdf") == 0) {
