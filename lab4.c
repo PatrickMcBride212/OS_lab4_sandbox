@@ -184,7 +184,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     send(client_fd, jpeg_response, sizeof(jpeg_response)-1, 0);
   }
   //else if(strcmp(content_type, "html") == 0) {
-  else {
+  else if(strcmp(content_type, "html") == 0) {
     printf("html header sent\n");
     send(client_fd, html_response, sizeof(html_response)-1, 0);
   }
