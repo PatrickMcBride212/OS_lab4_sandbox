@@ -114,7 +114,7 @@ static void serve_request(int client_fd, char * commandline_dir){
   strcpy(temp, requested_file);
   char * content_type = strtok(temp, ".");
   content_type = strtok(NULL, ".");
-  printf("content type: %s\n", content_type);
+  //printf("content type: %s\n", content_type);
   free(temp);
   char * file_check = malloc(strlen(requested_file + 1));
   file_check[0] = '.';
@@ -126,7 +126,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     //send the 404 error thing
     //printf("%s Not found\n", requested_file);
     send(client_fd, not_found_response, sizeof(not_found_response)-1, 0);
-    
+    printf("%s\n", not_found_response);
     char *file_path = malloc(strlen(not_found_file + 1));
     strcpy(file_path, not_found_file);
     printf("filepath: %s\n", file_path);
@@ -140,6 +140,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     printf("read: %ld", bytes_read);
     while (bytes_read != 0 && bytes_read != -1) {
       int sent = send(client_fd, buffer, bytes_read, 0);
+      printf("%s\n", buffer);
       bytes_read = read(read_fd, buffer, sizeof buffer);
       printf("sent: %d\n", sent);
       printf("read: %ld", bytes_read);
@@ -150,23 +151,23 @@ static void serve_request(int client_fd, char * commandline_dir){
     return;
   }
   //now check for file content type
-  //else
-  else if (strcmp(content_type, "pdf") == 0) {
+  printf(content_type);
+  if (strcmp(content_type, "pdf") == 0) {
     send(client_fd, pdf_response, sizeof(pdf_response)-1, 0);
   }
-  else if(strcmp(content_type, "png") == 0){
+  if(strcmp(content_type, "png") == 0){
     send(client_fd, png_response, sizeof(png_response)-1, 0);
   }
-   else if(strcmp(content_type, "gif") == 0){
+  if(strcmp(content_type, "gif") == 0){
     send(client_fd, gif_response, sizeof(gif_response)-1, 0);
   }
-  else if(strcmp(content_type, "txt") == 0){
+ if(strcmp(content_type, "txt") == 0){
     send(client_fd, txt_response, sizeof(txt_response)-1, 0);
   }
-  else if(strcmp(content_type, "jpeg") == 0){
+  if(strcmp(content_type, "jpeg") == 0){
     send(client_fd, jpeg_response, sizeof(jpeg_response)-1, 0);
   }
-   else {
+  else {
     send(client_fd, html_response, sizeof(html_response)-1, 0);
   }
   //send(client_fd, response, sizeof(response) - 1, 0);
