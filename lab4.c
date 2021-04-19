@@ -149,7 +149,6 @@ static void serve_request(int client_fd, char * commandline_dir){
     
     return;
   }
-  free(file_check);
   //now check for file content type
   //else
   else if (strcmp(content_type, "pdf") == 0) {
