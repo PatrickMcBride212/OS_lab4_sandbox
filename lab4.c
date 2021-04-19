@@ -13,6 +13,7 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 
 #define BACKLOG (10)
 
@@ -40,6 +41,11 @@ static char const pdf_response[] = "HTTP/1.0 200 OK\r\n"
  * Does not modify the given request string.
  * The returned resource should be free'd by the caller function.
  */
+
+static bool file_exists (char *filename) {
+  struct stat buffer;
+  return (stat (filename, &buffer) == 0);
+}
 
 static char *parseRequest(char *request) {
   //assume file paths are no more than 4095 bytes + 1 for null.
@@ -111,6 +117,9 @@ static void serve_request(int client_fd, char * commandline_dir){
   printf("content type: %s\n", content_type);
 
   //first check for file existence. If file doesn't exist, send 404 error and return from current function
+  if (!file_exists(requested_file)) {
+    printf("%s does not exist\n", requested_file);
+  }
   /*
   if (access(requested_file, F_OK) != 0) {
     //send the 404 error thing
