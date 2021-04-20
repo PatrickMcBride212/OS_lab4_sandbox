@@ -125,7 +125,6 @@ static void serve_request(int client_fd, char * commandline_dir){
         send(client_fd, html_response, sizeof(html_response)-1, 0);
         char * final_path;
         int base_length = (int) strlen(file_path);
-        int full_length;
         if (file_path[strlen(file_path)-1] == '/') {
             int add = (int) strlen("index.html");
             printf("%s ends in slash\n", file_path);
