@@ -33,6 +33,8 @@ static char const pdf_response[] = "HTTP/1.0 200 OK\r\n"
                                    "Content-type: application/pdf\r\n\r\n";
 static char const not_found_response[] = "HTTP/1.0 404 Not Found\r\n"
                                    "Content-type: text/html; charset=UTF-8\r\n\r\n";
+
+static char const reference[] = "index.html";
 //static char const not_found_file[] = "./not_found.html";
 /* char* parseRequest(char* request)
  * Args: HTTP request of the form "GET /path/to/resource HTTP/1.X"
@@ -124,7 +126,6 @@ static void serve_request(int client_fd, char * commandline_dir){
         char * final_path;
         int base_length = (int) strlen(file_path);
         int full_length;
-        char * reference[] = "index.html";
         if (file_path[strlen(file_path)-1] == '/') {
             int add = (int) strlen("index.html");
             printf("%s ends in slash\n", file_path);
