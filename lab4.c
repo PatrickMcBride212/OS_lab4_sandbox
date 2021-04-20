@@ -133,7 +133,7 @@ static void serve_request(int client_fd, char * commandline_dir){
             final_path[strlen(final_path)] = '/';
             base_length = strlen(final_path)+1;
             strcpy(final_path, file_path);
-            final_path[base_length-1] = '/';
+            final_path[base_length+2] = '/';
         }
         printf("base length: %d\n", base_length);
         printf("final path base: %s\n", final_path);
