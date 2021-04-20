@@ -130,7 +130,7 @@ static void serve_request(int client_fd, char * commandline_dir){
         } else {
             printf("%s doesn't end in slash\n", file_path);
             final_path = malloc(strlen(file_path));
-            base_length = strlen(final_path)+1;
+            base_length = strlen(final_path);
             strcpy(final_path, file_path);
             printf("insert at index %d\n", base_length);
         }
