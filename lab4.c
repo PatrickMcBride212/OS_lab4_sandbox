@@ -110,7 +110,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     char * content_type = strtok(temp, ".");
     content_type = strtok(NULL, ".");
     printf("content type: %s\n", content_type);
-    // take requested_file, add a . to beginning, check if dir, then check if file
+    // take requested_file, add a . to beginning, check if dir, then check if file exists
     char *file_path = malloc(strlen(requested_file) + 2);
     file_path[0] = '.';
     strcpy(file_path + 1, requested_file);
@@ -124,12 +124,12 @@ static void serve_request(int client_fd, char * commandline_dir){
         int base_length;
         if (file_path[strlen(file_path)-1] == '/') {
             printf("%s ends in slash\n", file_path);
-            final_path = malloc(strlen(file_path) + strlen("index.html"));
+            final_path = malloc(strlen(file_path));
             base_length = strlen(final_path);
             strcpy(final_path, file_path);
         } else {
             printf("%s doesn't end in slash\n", file_path);
-            final_path = malloc(strlen(file_path) + strlen("index.html") + 1);
+            final_path = malloc(strlen(file_path));
             base_length = strlen(final_path)+1;
             strcpy(final_path, file_path);
             printf("insert at index %d\n", base_length);
