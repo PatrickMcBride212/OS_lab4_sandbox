@@ -141,6 +141,24 @@ static void serve_request(int client_fd, char * commandline_dir){
             printf("insert at index %d\n", base_length);
             final_path[base_length] = '/';
             base_length++;
+            //now that proper path has been made, time to get the index file and send it.
+            send(client_fd, html_response, sizeof(html_response)-1, 0);
+            struct stat st;
+            stat(file_path, &st);
+            int size = st.st_size;
+            printf("filesize: %d\n", size);
+            int read_fd = open(file_path, O_RDONLY);
+            ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
+            printf("read: %ld ", bytes_read);
+            while(bytes_read != 0 && bytes_read != -1){
+                int sent = send(client_fd, buffer, bytes_read, 0);
+                bytes_read = read(read_fd, buffer, sizeof buffer);
+                printf("sent: %d\n", sent);
+                printf("read: %ld ", bytes_read);
+                //send(client_fd, buffer, bytes_read, 0);
+            }
+            printf("\n");
+            close(read_fd);
         }
         printf("base length: %d\n", base_length);
         printf("final path base: %s\n", final_path);
