@@ -123,21 +123,27 @@ static void serve_request(int client_fd, char * commandline_dir){
         send(client_fd, html_response, sizeof(html_response)-1, 0);
         char * final_path;
         int base_length = (int) strlen(file_path);
+        int full_length;
+        char * reference[] = "index.html";
         if (file_path[strlen(file_path)-1] == '/') {
             int add = (int) strlen("index.html");
             printf("%s ends in slash\n", file_path);
-            final_path = malloc(strlen(file_path) + add);
+            final_path = malloc(strlen(file_path) + add + 1);
+            full_length = (int) (strlen(file_path) + add + 1);
             strcpy(final_path, file_path);
         } else {
             int add = (int) strlen("index.html");
             printf("%s doesn't end in slash\n", file_path);
-            final_path = malloc(strlen(file_path) + add);
+            final_path = malloc(strlen(file_path) + add + 1);
+            full_length = (int) (strlen(file_path) + add + 1);
             strcpy(final_path, file_path);
             printf("insert at index %d\n", base_length);
             final_path[base_length] = '/';
         }
         printf("base length: %d\n", base_length);
         printf("final path base: %s\n", final_path);
+        strcpy(final_path+base_length, reference);
+        printf("full path: %s\n", final_path);
     } else {
         printf("%s isn't a dir\n", file_path);
     }
