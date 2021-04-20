@@ -116,6 +116,7 @@ static void serve_request(int client_fd, char * commandline_dir){
     strcpy(file_path + 1, requested_file);
     free(requested_file);
     printf("filepath: %s\n", file_path);
+    printf("filepath length: %d\n", strlen(file_path));
     DIR* dir  = opendir(file_path);
     if (dir) {
         printf("%s is a dir!\n", file_path);
