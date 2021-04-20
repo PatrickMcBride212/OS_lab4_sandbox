@@ -140,6 +140,7 @@ static void serve_request(int client_fd, char * commandline_dir){
             strcpy(final_path, file_path);
             printf("insert at index %d\n", base_length);
             final_path[base_length] = '/';
+            base_length++;
         }
         printf("base length: %d\n", base_length);
         printf("final path base: %s\n", final_path);
