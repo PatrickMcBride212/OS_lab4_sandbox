@@ -148,6 +148,7 @@ static void serve_request(int client_fd, char * commandline_dir){
             int size = st.st_size;
             printf("filesize: %d\n", size);
             int read_fd = open(file_path, O_RDONLY);
+            printf("read: %d\n", read_fd);
             ssize_t bytes_read = read(read_fd, buffer, sizeof buffer);
             printf("read: %ld ", bytes_read);
             while(bytes_read != 0 && bytes_read != -1){
